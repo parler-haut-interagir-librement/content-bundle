@@ -4,6 +4,18 @@ All notable changes to `phil/content-bundle` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## 0.1.1-alpha - 2026-11-14
+
+### Fixed
+
+- Publishing an HTML body keeps `<strong>` and `<em>` in its UJO and in the HTML compiled from it, apart from `<b>`
+  and `<i>`, instead of turning them into `<b>` and `<i>`; publishing that UJO or that HTML again gives the same
+  document. Brought by `phil/ujo` and `phil/markup`.
+
+### Changed
+
+- Requires `phil/ujo` `^0.1.1` and `phil/markup` `^0.2`, the versions that keep `<strong>` and `<em>`.
+
 ## 0.1.0-alpha - 2026-11-12
 
 ### Added

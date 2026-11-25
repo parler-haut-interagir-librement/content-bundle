@@ -4,9 +4,32 @@ All notable changes to `phil/content-bundle` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## 0.3.1-alpha - 2026-11-25
+
+### Changed
+
+- Requires the latest minor of each dependency (`doctrine/orm` 3.8, `doctrine/dbal` 4.6, `twig/twig` 3.31,
+  `phil/markup` 0.3, …), and of each development requirement (`doctrine/doctrine-bundle` 3.4,
+  `easycorp/easyadmin-bundle` 5.10). The identifiers of the roots are converted through the type provider of the
+  connection, as DBAL 4.6 asks, instead of the static `Type::getType()`. The unique constraint the listener looks for
+  is read as the index shape of `doctrine/orm` 3.8.
+- The development requirements take `easycorp/easyadmin-bundle` 5.10.4 or later, the release that fixes
+  GHSA-f7rw-7wx5-3c54: a link to a route, like the menu links of this bundle, passed its `routeParams` to the controller
+  of that route as arguments.
+
+### Security
+
+- Requires `twig/twig` 3.31.1 or later, which fixes the advisories of its sandbox published on 2026-11-24.
+- The signatures of the preview links were the HMAC under the secret itself, `%kernel.secret%` by default, which
+  other bundles keyed their own hashes with. `PreviewLinks` derives its key by HKDF-SHA256 under
+  `phil_content.preview_link` (`PreviewLinks::USAGE`). A preview link sent before the update stops working: send it
+  again.
+- Conflicts with `easycorp/easyadmin-bundle` below 5.10.4, the release that fixes GHSA-f7rw-7wx5-3c54: an application
+  cannot install this bundle next to a vulnerable EasyAdmin, which stays optional.
+
 ## 0.3.0-alpha - 2026-11-18
 
-The next version is 0.3.0-alpha: the keys of the routes, single roots, working copies and rows compare byte by byte on
+The keys of the routes, single roots, working copies and rows compare byte by byte on
 MySQL and MariaDB. See [Upgrading from 0.2](doc/storage.md#upgrading-from-02).
 
 ### Added
@@ -33,7 +56,7 @@ MySQL and MariaDB. See [Upgrading from 0.2](doc/storage.md#upgrading-from-02).
 
 ## 0.2.0-alpha - 2026-11-17
 
-The next version is 0.2.0-alpha: a new table, `phil_content_single_root`, to migrate, and preview links signed over
+A new table, `phil_content_single_root`, to migrate, and preview links signed over
 their tenant or host, which refuses the links made before. See [Upgrading from 0.1](doc/storage.md#upgrading-from-01)
 and the [preview links](doc/sitemap-feeds-previews.md#upgrading-from-01).
 
